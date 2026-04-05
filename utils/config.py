@@ -10,7 +10,8 @@ from typing import Optional
 from utils.proxy_manager import reload_proxy_config
 
 CONFIG_FILE_LOCK = threading.Lock()
-
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(CURRENT_DIR)
 def ts() -> str:
     return datetime.now().strftime("%H:%M:%S")
 
@@ -38,9 +39,10 @@ def deep_update_config(default_dict, user_dict):
 
 def init_config():
     # 配置文件路径放到data 目录下
-    config_dir = "data"
+    config_dir = os.path.join(BASE_DIR, "data")
     config_path = os.path.join(config_dir, "config.yaml")
-    template_path = "config.example.yaml"
+    template_path = os.path.join(BASE_DIR, "config.example.yaml")
+
     os.makedirs(config_dir, exist_ok=True)
     if not os.path.exists(config_path):
         if os.path.exists(template_path):

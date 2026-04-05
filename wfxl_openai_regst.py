@@ -53,7 +53,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "config.yaml")
 engine = core_engine.RegEngine()
 db_manager.init_db()
 log_history = deque(maxlen=500)
@@ -106,8 +106,8 @@ class SMSPriceReq(BaseModel):
 
 def get_web_password():
     try:
-        if os.path.exists("config.yaml"):
-            with open("config.yaml", "r", encoding="utf-8") as f:
+        if os.path.exists(CONFIG_PATH):
+            with open(CONFIG_PATH, "r", encoding="utf-8") as f:
                 c = yaml.safe_load(f) or {}
                 return str(c.get("web_password", "admin")).strip()
     except Exception:
@@ -252,23 +252,23 @@ async def stop_task(token: str = Depends(verify_token)):
 
 @app.get("/api/config")
 async def get_config(token: str = Depends(verify_token)):
-    config_path = "config.yaml"
     config_data = {}
-    if os.path.exists(config_path):
-        with open(config_path, "r", encoding="utf-8") as f:
+    if os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
             config_data = yaml.safe_load(f) or {}
     config_data["web_password"] = config_data.get("web_password", "admin")
     return config_data
 
 @app.post("/api/config")
 async def save_config(new_config: dict, token: str = Depends(verify_token)):
-    config_path = "config.yaml"
     try:
         with core_engine.cfg.CONFIG_FILE_LOCK:
-            with open(config_path, "w", encoding="utf-8") as f:
+            with open(CONFIG_PATH, "w", encoding="utf-8") as f:
                 yaml.dump(new_config, f, allow_unicode=True, sort_keys=False, default_flow_style=False)
-        try: reload_all_configs()
-        except Exception: pass
+        try:
+            reload_all_configs()
+        except Exception:
+            pass
         return {"status": "success", "message": "✅ 配置已成功保存！"}
     except Exception as e:
         return {"status": "error", "message": f"❌ 保存失败: {str(e)}"}
