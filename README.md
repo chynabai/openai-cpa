@@ -1,4 +1,6 @@
 ﻿# Wenfxl Codex Manager Web Console
+[![Telegram Group](https://img.shields.io/badge/Telegram-Community_Chat-0088cc?style=for-the-badge&logo=telegram)](https://t.me/+4AmjbVPvvRgxMDVl)
+[![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey?style=for-the-badge)](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
 
 An advanced Distributed Automation Platform for high-concurrency account registration and full-lifecycle inventory management. It serves as a centralized Web Orchestration Hub that seamlessly synchronizes distributed browser extension workers (Classic Mode), multi-backend mailbox engines, and enterprise-grade cloud warehouses (CPA/Sub2API) into a unified master-worker ecosystem.
 
