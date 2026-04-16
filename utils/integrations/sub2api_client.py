@@ -310,7 +310,7 @@ class Sub2APIClient:
             response = cffi_requests.post(
                 url,
                 headers=self.headers,
-                json={},
+                json={"model_id":"gpt-5.2"},
                 timeout=60,
                 impersonate="chrome110",
             )
@@ -347,7 +347,7 @@ class Sub2APIClient:
             return "ok", "no terminal SSE event, skipped"
         except Exception as exc:
             logger.warning("Sub2API test_account %s failed: %s", account_id, exc)
-            return "ok", f"test error, skipped: {str(exc)[:120]}"
+            return "ok", f"test error, skipped: {str(exc)}"
 
     def test_connection(self) -> Tuple[bool, str]:
         url = f"{self.api_url}/api/v1/admin/accounts/data"
